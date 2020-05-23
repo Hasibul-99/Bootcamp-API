@@ -6,7 +6,12 @@ const ErrorResponse = require("../utils/errorResponse");
 // @route     POST /api/v1/auth/register
 // @access    Public
 exports.register = asynchandler(async (req, res, next) => {
-	const { name, email, password, role } = req.body;
+	const {
+		name,
+		email,
+		password,
+		role
+	} = req.body;
 
 	// // Create user
 	const user = await User.create({
@@ -26,7 +31,10 @@ exports.register = asynchandler(async (req, res, next) => {
 // @route     POST /api/v1/auth/login
 // @access    Public
 exports.login = asynchandler(async (req, res, next) => {
-	const { email, password } = req.body;
+	const {
+		email,
+		password
+	} = req.body;
 
 	// Validate emil & password
 	if (!email || !password) {
@@ -73,3 +81,15 @@ const sendTokenResponse = (user, statusCode, res) => {
 		token,
 	});
 };
+
+// @desc      Get current logged in user
+// @route     POST /api/v1/auth/me
+// @access    Private
+exports.getMe = asynchandler(async (req, res, next) => {
+	const user = await User.findById(req.user.id);
+
+	res.status(200).json({
+		success: true,
+		data: user
+	});
+});
