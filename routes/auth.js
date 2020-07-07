@@ -4,7 +4,9 @@
      login,
      getMe,
      forgotPassword,
-     resetPassword
+     resetPassword,
+     updateDetails,
+     updatePassword
  } = require('../controllers/auth');
 
  const {
@@ -20,5 +22,7 @@
  router.post('/forgotpassword', forgotPassword);
 
  router.put('/resetPassword/:resettoken', resetPassword)
+ router.put('/updatedetails', protect, updateDetails);
+ router.put('/updatepassword', protect, updatePassword);
 
  module.exports = router;
