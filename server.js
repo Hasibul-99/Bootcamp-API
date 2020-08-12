@@ -1,8 +1,9 @@
+const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 
 const errorHandeler = require('./middleware/error');
 const connectDB = require('./config/db');
@@ -18,6 +19,7 @@ connectDB();
 const bootcamps = require("./routes/bootcamps");
 const courses = require("./routes/courses");
 const auth = require('./routes/auth');
+const fileupload = require('express-fileupload');
 
 const app = express();
 
@@ -30,6 +32,12 @@ app.use(cookieParser())
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
+
+//File uploading
+app.use(fileupload());
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps);
